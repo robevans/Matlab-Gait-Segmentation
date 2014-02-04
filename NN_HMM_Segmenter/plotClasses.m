@@ -22,11 +22,11 @@ plot1 = plot(data,'Parent',subplot1);
 ylabel('Rotation (deg/s)');
 
 % Create title
-title({'Left Leg and Pelvis Gyroscope Data (Four Sensors)'});
+title({'Motion data'});
 
 % Create subplot for segment boundaries
 subplot2 = subplot(2,1,2,'Parent',figure1,...
-    'YTickLabel',{'','Heel-off to Toe-off','Toe-off to Midswing','Midswing to Heel-strike','Heel-strike to Toe-down','Toe-down to Midstance','Midstance to Heel-off'},...
+    ...%'YTickLabel',{'','Heel-off to Toe-off','Toe-off to Midswing','Midswing to Heel-strike','Heel-strike to Toe-down','Toe-down to Midstance','Midstance to Heel-off'},...
     'XMinorTick','on');
 
 box(subplot2,'on');
@@ -40,7 +40,7 @@ stem(classes,'Parent',subplot2);
 xlabel('Time (frames)');
 
 % Create title
-title('Automatic segmentation');
+title('Segmentation');
 
 % Create legend
 %legend(subplot1,'show');
