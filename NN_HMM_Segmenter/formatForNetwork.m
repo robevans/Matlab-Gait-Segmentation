@@ -1,5 +1,5 @@
 function [ X, T ] = formatForNetwork(walk_data, segments, step_size, window_size)
-%UNTITLED3 Creates data structure for input to neural network.
+%formatForNetwork Creates data structure for input to neural network.
 %   Returns a matrix where each column has the data from a sliding
 %   window over the input walk.
 %
@@ -30,7 +30,7 @@ function window_class = findClassAtCentreOfWindow(window_start_index, window_siz
     
     % Find the segment prior to the index, and use that class
     if index_of_centre < min(segments(:,1))
-        next_segment = min(segments);
+        next_segment = segments(1,:);
         prior_segment_class = mod( next_segment(2)-2, max(segments(:,2)) )+1;
         
     elseif index_of_centre >= max(segments(:,1))
