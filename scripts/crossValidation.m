@@ -1,7 +1,7 @@
 % Model parameters
 hiddenLayers = [10,10,10];
 step_size = 1;
-window_size = 10;
+window_size = 1;
 
 % Ready the data
 loadAlignedData
@@ -24,5 +24,7 @@ for i = 1 : length(data)
     test_Rsegs = Rsegs{i};
     
     buildTrainTestNNAndHMM_cellArrayInputs(train_data, train_Lsegs, train_data, train_Lsegs, test_data, test_Lsegs, hiddenLayers, step_size, window_size, 'trainscg', strcat('Left Leg Segments - capture ',{' '},titles{i}));
+    print( strcat('./Graphs/CrossVal/',titles{i},'L'), '-dpdf')
     buildTrainTestNNAndHMM_cellArrayInputs(train_data, train_Rsegs, train_data, train_Rsegs, test_data, test_Rsegs, hiddenLayers, step_size, window_size, 'trainscg', strcat('Right Leg Segments - capture ',{' '},titles{i}));
+    print( strcat('./Graphs/CrossVal/',titles{i},'R'), '-dpdf')
 end

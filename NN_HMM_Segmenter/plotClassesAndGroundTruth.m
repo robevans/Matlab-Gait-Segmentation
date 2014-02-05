@@ -31,7 +31,7 @@ title(plotTitle);
 
 %% Create subplot for segment boundaries
 subplot2 = subplot(3,1,2,'Parent',figure1,...
-    ...%'YTickLabel',{'','Heel-off to Toe-off','Toe-off to Midswing','Midswing to Heel-strike','Heel-strike to Toe-down','Toe-down to Midstance','Midstance to Heel-off'},...
+    'YTickLabel',{'','Heel contact','Foot flat','Heel lift','Toe off'},...
     'XMinorTick','on');
 
 box(subplot2,'on');
@@ -49,14 +49,14 @@ title('Segmentation');
 
 %% Create subplot for ground truth
 subplot3 = subplot(3,1,3,'Parent',figure1,...
-    ...%'YTickLabel',{'','Heel-off to Toe-off','Toe-off to Midswing','Midswing to Heel-strike','Heel-strike to Toe-down','Toe-down to Midstance','Midstance to Heel-off'},...
+    'YTickLabel',{'','Heel contact','Foot flat','Heel lift','Toe off'},...
     'XMinorTick','on');
 
 % Format data for plotting
 [~, T] = formatForNetwork(data, trueSegments, 1, 1);
 trueClasses = realignNetworkOutput(T, 1, 1, length(data));
 trueClasses(1:floor(window_size/2)) = 0;
-trueClasses(end-floor(window_size/2)+1:end) = 0;
+trueClasses((end-floor(window_size/2))+2:end) = 0;
 
 box(subplot3,'on');
 grid(subplot3,'on');
