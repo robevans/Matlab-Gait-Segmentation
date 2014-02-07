@@ -1,6 +1,6 @@
-function plotClassesAndGroundTruth(data, classes, trueSegments, window_size, plotTitle)
+function plotClassesAndGroundTruth(data, classes, trueSegments, window_size, error, plotTitle)
 
-if nargin < 5
+if nargin < 6
     plotTitle = 'Motion data';
 end
 
@@ -42,7 +42,7 @@ hold(subplot2,'all');
 stem(classes,'Parent',subplot2);
 
 % Create title
-title('Segmentation');
+title(strcat('Segmentation - error (', num2str(error), ')'));
 
 % Create legend
 %legend(subplot2,'show');
