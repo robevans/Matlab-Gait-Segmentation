@@ -5,6 +5,7 @@ if nargin < 5
     data_columns = 1:42;
 end
 
+closePlotAfterSaving = false;
 if savePlots && ~showPlots
     showPlots = true;
     closePlotAfterSaving = true;
