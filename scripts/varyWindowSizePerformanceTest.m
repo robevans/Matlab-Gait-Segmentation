@@ -4,7 +4,7 @@ NeuralNetworkHiddenLayers = [10,10,10];
 
 min_window_size = 1;
 window_increment_size = 1;
-max_window_size = 50;
+max_window_size = 27;
 
 perf_windows = nan(max_window_size,1);
 
