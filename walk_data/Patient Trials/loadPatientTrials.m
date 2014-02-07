@@ -1,3 +1,24 @@
+function loadPatientTrials(baseCaller)
+% Loads trials data (not including spine sensor, but just the seven used in
+% the Vicon aligned captures).  Resamples the data to match the framerate
+% of the Vicon aligned data.
+
+if nargin < 1
+    baseCaller = 'base';
+end
+
+trials = {'op1.csv' 'op2.csv' 'op3.csv' 'op4.csv' 'os1.csv' 'os2.csv' 'os3.csv' 'os4.csv' 'os5.csv' 'os6.csv'...
+    'P3-n12.csv' 'P3-n13.csv' 'P3-n14.csv' 'P3-n16.csv' 'P3-n17.csv' 'P3-n20.csv' 'P3-s38.csv' 'P3-s39.csv' 'P3-s40.csv' 'P3-s42.csv' 'P3-s43.csv' 'P3-s44.csv' 'P3-s45.csv' 'P3-s47.csv' 'P3-s53.csv' 'P3-s54.csv' 'P3-s55.csv'};
+
+for i=1:length(trials),
+    data = importXZdata(trials{i});
+    time_vector = importTimeColumn(trials{i});
+    data = resampleFramerate(data, time_vector, 42.666668);
+    assignin(baseCaller, trials{i}(end-6:end-4), data)
+end
+
+end
+
 function data = importXZdata(filename, startRow, endRow)
 %IMPORTFILE Import numeric data from a text file as a matrix.
 %   data = importXZdata(FILENAME) Reads data from text file FILENAME for the
