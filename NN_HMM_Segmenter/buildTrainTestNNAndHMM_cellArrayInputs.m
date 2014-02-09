@@ -47,6 +47,8 @@ function [classes, perf_HMM] = testNNAndHMM(net, TRANS, EMIS, test_data, test_se
     %perf_HMM = perform(net, targets, HMM_classifications)
     perf_HMM = mse(net, targets, HMM_classifications)
     
+    performanceMetrics(targets, HMM_classifications);
+    
     %errors = gsubtract(targets, HMM_classifications);
     %figure, plotconfusion(targets, HMM_classifications)
     %figure, ploterrhist(errors)
