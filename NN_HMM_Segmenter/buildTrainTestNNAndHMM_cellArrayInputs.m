@@ -18,7 +18,7 @@ function [net, HMM_TRANS_EST, HMM_EMIS_EST] = trainNNAndHMM(trainNN_data, trainN
     %figure, plottrainstate(tr)
     
     %% Train Hidden Markov Model
-    nClasses = 4;
+    nClasses = 5;
     
     % Manually count all but one of the HMM training datas.
     TRANS_COUNTS = zeros(nClasses);
