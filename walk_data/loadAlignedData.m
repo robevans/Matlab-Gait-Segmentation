@@ -1,4 +1,7 @@
 function loadAlignedData(baseCaller)
+% This function loads all of the Orient data which corresponds to
+% synchronised Vicon data.  It resamples the data from subject R to match
+% the framerate of the other subjects, which is 42.67.
 
 if nargin < 1
     baseCaller = 'base';
@@ -84,33 +87,57 @@ for i=1:length(walks),
     end
     if strcmp(walks{i}, 'Rxz-11.csv')
         start_frame = 212;
-        data = data(start_frame:307,:);
-        R11L(:,1) = R11L(:,1) - start_frame;
-        R11R(:,1) = R11R(:,1) - start_frame;
+        end_frame = 307;
+        data = data(start_frame:end_frame,:);
+        % All data from subject R must be resampled to match the framerate
+        % of the other subjects' data (51.2fps to 42.667fps).
+        time_column = importTimeColumn(strcat('./walk_data/viconAlignedWalks/',walks{i}));
+        data = resampleFramerate(data, time_column(start_frame:end_frame), 42.666668);
+        scale_factor = 42.666668/51.2;
+        R11L(:,1) = R11L(:,1)*scale_factor - start_frame*scale_factor;
+        R11R(:,1) = R11R(:,1)*scale_factor - start_frame*scale_factor;
         assignin(baseCaller, 'Rsegs11L', R11L)
         assignin(baseCaller, 'Rsegs11R', R11R)
     end
     if strcmp(walks{i}, 'Rxz-14.csv')
         start_frame = 243;
-        data = data(start_frame:323,:);
-        R14L(:,1) = R14L(:,1) - start_frame;
-        R14R(:,1) = R14R(:,1) - start_frame;
+        end_frame = 323;
+        data = data(start_frame:end_frame,:);
+        % All data from subject R must be resampled to match the framerate
+        % of the other subjects' data (51.2fps to 42.667fps).
+        time_column = importTimeColumn(strcat('./walk_data/viconAlignedWalks/',walks{i}));
+        data = resampleFramerate(data, time_column(start_frame:end_frame), 42.666668);
+        scale_factor = 42.666668/51.2;
+        R14L(:,1) = R14L(:,1)*scale_factor - start_frame*scale_factor;
+        R14R(:,1) = R14R(:,1)*scale_factor - start_frame*scale_factor;
         assignin(baseCaller, 'Rsegs14L', R14L)
         assignin(baseCaller, 'Rsegs14R', R14R)
     end
     if strcmp(walks{i}, 'Rxz-15.csv')
         start_frame = 226;
-        data = data(start_frame:327,:);
-        R15L(:,1) = R15L(:,1) - start_frame;
-        R15R(:,1) = R15R(:,1) - start_frame;
+        end_frame = 327;
+        data = data(start_frame:end_frame,:);
+        % All data from subject R must be resampled to match the framerate
+        % of the other subjects' data (51.2fps to 42.667fps).
+        time_column = importTimeColumn(strcat('./walk_data/viconAlignedWalks/',walks{i}));
+        data = resampleFramerate(data, time_column(start_frame:end_frame), 42.666668);
+        scale_factor = 42.666668/51.2;
+        R15L(:,1) = R15L(:,1)*scale_factor - start_frame*scale_factor;
+        R15R(:,1) = R15R(:,1)*scale_factor - start_frame*scale_factor;
         assignin(baseCaller, 'Rsegs15L', R15L)
         assignin(baseCaller, 'Rsegs15R', R15R)
     end
     if strcmp(walks{i}, 'Rxz-20.csv')
         start_frame = 267;
-        data = data(start_frame:359,:);
-        R20L(:,1) = R20L(:,1) - start_frame;
-        R20R(:,1) = R20R(:,1) - start_frame;
+        end_frame = 359;
+        data = data(start_frame:end_frame,:);
+        % All data from subject R must be resampled to match the framerate
+        % of the other subjects' data (51.2fps to 42.667fps).
+        time_column = importTimeColumn(strcat('./walk_data/viconAlignedWalks/',walks{i}));
+        data = resampleFramerate(data, time_column(start_frame:end_frame), 42.666668);
+        scale_factor = 42.666668/51.2;
+        R20L(:,1) = R20L(:,1)*scale_factor - start_frame*scale_factor;
+        R20R(:,1) = R20R(:,1)*scale_factor - start_frame*scale_factor;
         assignin(baseCaller, 'Rsegs20L', R20L)
         assignin(baseCaller, 'Rsegs20R', R20R)
     end
