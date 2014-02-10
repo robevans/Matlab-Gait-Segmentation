@@ -25,10 +25,11 @@ performanceCountsByClass = zeros(length(classes), 4);
 for c = 1 : length(classes)
     X = classifications == classes(c);
     T = targets == classes(c);
-    classes(c)
     [TP, TN, FP, FN] = performanceCountsOneClass( X, T, tolerance );
-    performanceCountsByClass(c,:) = [TP, TN, FP, FN]
+    performanceCountsByClass(c,:) = [TP, TN, FP, FN];
 end
+
+%{
 totalCounts = sum(performanceCountsByClass);
 TP = totalCounts(1);
 TN = totalCounts(2);
@@ -36,7 +37,7 @@ FP = totalCounts(3);
 FN = totalCounts(4);
 sensitivity = TP / (TP + FN) * 100
 specificity = TN / (FP + TN) * 100
-
+%}
 
 %{
 TargetBoundaries = findSegmentBoundaries( targets );

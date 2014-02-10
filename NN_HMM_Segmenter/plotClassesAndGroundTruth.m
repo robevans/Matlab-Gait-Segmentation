@@ -1,4 +1,4 @@
-function plotClassesAndGroundTruth(data, classes, trueSegments, window_size, error, plotTitle)
+function plotClassesAndGroundTruth(data, classes, trueSegments, window_size, performanceCountsByClass, plotTitle)
 
 if nargin < 6
     plotTitle = 'Motion data';
@@ -31,7 +31,7 @@ title(plotTitle);
 
 %% Create subplot for segment boundaries
 subplot2 = subplot(3,1,2,'Parent',figure1,...
-    'YTickLabel',{'','Heel contact','Foot flat','Heel lift','Toe off'},...
+    'YTickLabel',{'','Heel contact','Foot flat','Heel lift','Toe off','Midswing'},...
     'XMinorTick','on');
 
 box(subplot2,'on');
@@ -42,7 +42,14 @@ hold(subplot2,'all');
 stem(classes,'Parent',subplot2);
 
 % Create title
-title(strcat('Segmentation - error (', num2str(error), ')'));
+totalCounts = sum(performanceCountsByClass);
+TP = totalCounts(1);
+TN = totalCounts(2);
+FP = totalCounts(3);
+FN = totalCounts(4);
+sensitivity = TP / (TP + FN) * 100;
+specificity = TN / (FP + TN) * 100;
+title( strcat('Segmentation - sensitivity (', num2str(sensitivity), ') specificity (', num2str(specificity), ')') );
 
 % Create legend
 %legend(subplot2,'show');

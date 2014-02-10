@@ -1,8 +1,8 @@
-function [classes, perf_HMM, performanceCountsByClass] = buildTrainTestNNAndHMM_cellArrayInputs(trainNN_data, trainNN_segments, trainHMM_data, trainHMM_segments, test_data, test_segments, hidden_layers, step_size, window_size, trainFcn, plotTitle, showPlot)
+function [classes, perf_HMM, performanceCountsByClass] = buildTrainTestNNAndHMM_cellArrayInputs(trainNN_data, trainNN_segments, trainHMM_data, trainHMM_segments, test_data, test_segments, hidden_layers, step_size, window_size, trainFcn, plotTitle, showPlot, performanceCountsTolerance)
 % Trains and tests the gait segmenter.  Each of the training data arguments
 % should be a cell array.
     [net, TRANS, EMIS] = trainNNAndHMM(trainNN_data, trainNN_segments, trainHMM_data, trainHMM_segments, step_size, window_size, hidden_layers, trainFcn);
-    [classes, perf_HMM, performanceCountsByClass] = testNNAndHMM(net, TRANS, EMIS, test_data, test_segments, step_size, window_size, plotTitle, showPlot);
+    [classes, perf_HMM, performanceCountsByClass] = testNNAndHMM(net, TRANS, EMIS, test_data, test_segments, step_size, window_size, plotTitle, showPlot, performanceCountsTolerance);
 end
 
 function [net, HMM_TRANS_EST, HMM_EMIS_EST] = trainNNAndHMM(trainNN_data, trainNN_segments, trainHMM_data, trainHMM_segments, step_size, window_size, hiddenLayers, trainFcn)
@@ -35,7 +35,7 @@ function [net, HMM_TRANS_EST, HMM_EMIS_EST] = trainNNAndHMM(trainNN_data, trainN
     [HMM_TRANS_EST, HMM_EMIS_EST] = hmmestimate(vec2ind(emissions), vec2ind(states), 'Pseudotransitions', TRANS_COUNTS, 'Pseudoemissions', EMIS_COUNTS);
 end
 
-function [classes, perf_HMM, performanceCountsByClass] = testNNAndHMM(net, TRANS, EMIS, test_data, test_segments, step_size, window_size, plotTitle, showPlot)
+function [classes, perf_HMM, performanceCountsByClass] = testNNAndHMM(net, TRANS, EMIS, test_data, test_segments, step_size, window_size, plotTitle, showPlot, performanceCountsTolerance)
     [X,targets] = formatForNetwork(test_data, test_segments, step_size, window_size);
     NN_classifications = net(X);
     %perf_NN = perform(net, targets, ind2vec(vec2ind(NN_classifications)))
@@ -47,7 +47,7 @@ function [classes, perf_HMM, performanceCountsByClass] = testNNAndHMM(net, TRANS
     %perf_HMM = perform(net, targets, HMM_classifications)
     perf_HMM = mse(net, targets, HMM_classifications)
     
-    performanceCountsByClass = performanceMetrics(targets, HMM_classifications);
+    performanceCountsByClass = performanceMetrics(targets, HMM_classifications, performanceCountsTolerance);
     
     %errors = gsubtract(targets, HMM_classifications);
     %figure, plotconfusion(targets, HMM_classifications)
@@ -56,7 +56,7 @@ function [classes, perf_HMM, performanceCountsByClass] = testNNAndHMM(net, TRANS
     classes = realignNetworkOutput(HMM_classifications, step_size, window_size, length(test_data));
     
     if showPlot
-        plotClassesAndGroundTruth(test_data, classes, test_segments, window_size, perf_HMM, plotTitle);
+        plotClassesAndGroundTruth(test_data, classes, test_segments, window_size, performanceCountsByClass, plotTitle);
     end
 end
 

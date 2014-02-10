@@ -1,7 +1,10 @@
-function average_performance = doCrossValidation(showPlots, savePlots, window_size, hiddenLayers, data_columns)
+function [sumPerformanceCounts] = crossValidation(showPlots, savePlots, window_size, hiddenLayers, performanceCountsTolerance, data_columns)
 %Does cross validation for Vicon aligned Orient data.
 
 if nargin < 5
+    performanceCountsTolerance = 0;
+end
+if nargin < 6
     data_columns = 1:42;
 end
 
@@ -27,7 +30,8 @@ for i = 1 : length(titles)
     data{i} = data{i}(:,data_columns);
 end
 
-sum_performance = 0;
+sum_error = 0;
+sumPerformanceCounts = zeros(1,4);
 
 % Leave-one-out cross validation
 for i = 1 : length(data)
@@ -42,23 +46,39 @@ for i = 1 : length(data)
     test_Lsegs = Lsegs{i};
     test_Rsegs = Rsegs{i};
     
-    [~, perfL] = buildTrainTestNNAndHMM_cellArrayInputs(train_data, train_Lsegs, train_data, train_Lsegs, test_data, test_Lsegs, hiddenLayers, step_size, window_size, 'trainscg', strcat('Left Leg Segments - capture ',{' '},titles{i}), showPlots);
+    [~, Lerror, LperfCountsByClass] = buildTrainTestNNAndHMM_cellArrayInputs(train_data, train_Lsegs, train_data, train_Lsegs, test_data, test_Lsegs, hiddenLayers, step_size, window_size, 'trainscg', strcat('Left Leg Segments - capture ',{' '},titles{i}), showPlots, performanceCountsTolerance);
     if savePlots
+        set(gcf,'PaperPositionMode','auto');
+        set(gcf,'PaperOrientation','landscape');
+        set(gcf,'Position',[50 50 1200 800]);
         print( strcat('./Graphs/CrossVal/',titles{i},'L'), '-dpdf')
         if closePlotAfterSaving
             close
         end
     end
-    [~, perfR] = buildTrainTestNNAndHMM_cellArrayInputs(train_data, train_Rsegs, train_data, train_Rsegs, test_data, test_Rsegs, hiddenLayers, step_size, window_size, 'trainscg', strcat('Right Leg Segments - capture ',{' '},titles{i}), showPlots);
+    [~, Rerror, RperfCountsByClass] = buildTrainTestNNAndHMM_cellArrayInputs(train_data, train_Rsegs, train_data, train_Rsegs, test_data, test_Rsegs, hiddenLayers, step_size, window_size, 'trainscg', strcat('Right Leg Segments - capture ',{' '},titles{i}), showPlots, performanceCountsTolerance);
     if savePlots
+        set(gcf,'PaperPositionMode','auto');
+        set(gcf,'PaperOrientation','landscape');
+        set(gcf,'Position',[50 50 1200 800]);
         print( strcat('./Graphs/CrossVal/',titles{i},'R'), '-dpdf')
         if closePlotAfterSaving
             close
         end
     end
     
-    sum_performance = sum_performance + perfL + perfR;
+    sumPerformanceCounts = sumPerformanceCounts + sum(LperfCountsByClass) + sum(RperfCountsByClass);
+    
+    sum_error = sum_error + Lerror + Rerror;
 end
 
-average_performance = sum_performance / (length(data) * 2);
+average_error = sum_error / (length(data) * 2)
+
+TP = sumPerformanceCounts(1);
+TN = sumPerformanceCounts(2);
+FP = sumPerformanceCounts(3);
+FN = sumPerformanceCounts(4);
+average_sensitivity = TP / (TP + FN) * 100
+average_specificity = TN / (FP + TN) * 100
+
 end
