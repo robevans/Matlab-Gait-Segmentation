@@ -12,10 +12,11 @@ end
 
 for t = 0 : maxTolerance
     sumPerfCountsByClass = crossValidation(0,0,window_size,hiddenLayers,t);
-    TP = sumPerfCountsByClass(1);
-    TN = sumPerfCountsByClass(2);
-    FP = sumPerfCountsByClass(3);
-    FN = sumPerfCountsByClass(4);
+    sumAllPerfCounts = sum(sumPerfCountsByClass);
+    TP = sumAllPerfCounts(1);
+    TN = sumAllPerfCounts(2);
+    FP = sumAllPerfCounts(3);
+    FN = sumAllPerfCounts(4);
     average_sensitivity = TP / (TP + FN) * 100
     average_specificity = TN / (FP + TN) * 100
     tolerancesSensitivitySpecificity(t+1,:) = [average_sensitivity, average_specificity];

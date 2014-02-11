@@ -1,4 +1,4 @@
-function [sumPerformanceCounts] = crossValidation(showPlots, savePlots, window_size, hiddenLayers, performanceCountsTolerance, data_columns)
+function [sumPerformanceCountsByClass] = crossValidation(showPlots, savePlots, window_size, hiddenLayers, performanceCountsTolerance, data_columns)
 %Does cross validation for Vicon aligned Orient data.
 
 if nargin < 5
@@ -31,7 +31,7 @@ for i = 1 : length(titles)
 end
 
 sum_error = 0;
-sumPerformanceCounts = zeros(1,4);
+sumPerformanceCountsByClass = zeros(5, 4);
 
 % Leave-one-out cross validation
 for i = 1 : length(data)
@@ -46,7 +46,7 @@ for i = 1 : length(data)
     test_Lsegs = Lsegs{i};
     test_Rsegs = Rsegs{i};
     
-    [~, Lerror, LperfCountsByClass] = buildTrainTestNNAndHMM_cellArrayInputs(train_data, train_Lsegs, train_data, train_Lsegs, test_data, test_Lsegs, hiddenLayers, step_size, window_size, 'trainscg', strcat('Left Leg Segments - capture ',{' '},titles{i}), showPlots, performanceCountsTolerance);
+    [~, Lerror, LperfCountsByClass] = buildTrainTestNNAndHMM_cellArrayInputs(train_data, train_Lsegs, train_data, train_Lsegs, test_data, test_Lsegs, hiddenLayers, step_size, window_size, 'trainscg', strcat('Left Leg Segments - capture ',{' '},titles{i}), showPlots, performanceCountsTolerance, 5);
     if savePlots
         set(gcf,'PaperPositionMode','auto');
         set(gcf,'PaperOrientation','landscape');
@@ -56,7 +56,7 @@ for i = 1 : length(data)
             close
         end
     end
-    [~, Rerror, RperfCountsByClass] = buildTrainTestNNAndHMM_cellArrayInputs(train_data, train_Rsegs, train_data, train_Rsegs, test_data, test_Rsegs, hiddenLayers, step_size, window_size, 'trainscg', strcat('Right Leg Segments - capture ',{' '},titles{i}), showPlots, performanceCountsTolerance);
+    [~, Rerror, RperfCountsByClass] = buildTrainTestNNAndHMM_cellArrayInputs(train_data, train_Rsegs, train_data, train_Rsegs, test_data, test_Rsegs, hiddenLayers, step_size, window_size, 'trainscg', strcat('Right Leg Segments - capture ',{' '},titles{i}), showPlots, performanceCountsTolerance, 5);
     if savePlots
         set(gcf,'PaperPositionMode','auto');
         set(gcf,'PaperOrientation','landscape');
@@ -67,18 +67,14 @@ for i = 1 : length(data)
         end
     end
     
-    sumPerformanceCounts = sumPerformanceCounts + sum(LperfCountsByClass) + sum(RperfCountsByClass);
+    sumPerformanceCountsByClass = sumPerformanceCountsByClass + LperfCountsByClass + RperfCountsByClass;
     
     sum_error = sum_error + Lerror + Rerror;
 end
 
 average_error = sum_error / (length(data) * 2)
+sumAllPerformanceCounts = sum(sumPerformanceCountsByClass);
 
-TP = sumPerformanceCounts(1);
-TN = sumPerformanceCounts(2);
-FP = sumPerformanceCounts(3);
-FN = sumPerformanceCounts(4);
-average_sensitivity = TP / (TP + FN) * 100
-average_specificity = TN / (FP + TN) * 100
+[average_sensitivity, average_specificity] = getSensitivityAndSpecificity(sumAllPerformanceCounts)
 
 end
