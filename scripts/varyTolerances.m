@@ -29,7 +29,7 @@ print( strcat('./Graphs/tolerancePerformance'), '-dpdf')
 
 end
 
-function createfigure1(Xs1, YMatrix1)
+function createfigure(Xs1, YMatrix1)
 %CREATEFIGURE2(XS1, YMATRIX1)
 %  XS1:  vector of x data
 %  YMATRIX1:  matrix of y data
