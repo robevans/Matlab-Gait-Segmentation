@@ -1,4 +1,8 @@
 function tolerancesSensitivitySpecificity = varyTolerances(maxTolerance, hiddenLayers, window_size)
+% Plots the effect on performance (sensitivity and specificity) of varying
+% the tolerance when calculating performance metrics.  e.g. with a
+% tolerance of 1, gait phase classifications will be treated as correct
+% even if they are 1 frame away from the true answer.
 
 if nargin < 1
     maxTolerance = 10;

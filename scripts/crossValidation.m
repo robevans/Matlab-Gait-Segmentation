@@ -1,5 +1,5 @@
 function [sumPerformanceCountsByClass] = crossValidation(showPlots, savePlots, window_size, hiddenLayers, performanceCountsTolerance, data_columns)
-%Does cross validation for Vicon aligned Orient data.
+%Does leave-one-out cross validation for Vicon aligned Orient data.
 
 if nargin < 5
     performanceCountsTolerance = 0;

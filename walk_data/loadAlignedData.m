@@ -3,6 +3,11 @@ function loadAlignedData(baseCaller)
 % synchronised Vicon data.  It resamples the data from subject R to match
 % the framerate of the other subjects, which is 42.67.
 
+% Setting baseCaller affects whether the loaded variables will be available
+% globally or locally.  Setting to 'base' means they will be added to the
+% workspace, 'caller' means to the local scope of the calling function.  Se
+% documentation on assignin for more information.
+
 if nargin < 1
     baseCaller = 'base';
 end
