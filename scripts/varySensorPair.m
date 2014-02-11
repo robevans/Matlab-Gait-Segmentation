@@ -15,14 +15,14 @@ end
 
 loadAlignedData('caller')
 
-%perfCounts_all_sensors = crossValidation(0,0, window_size, hiddenLayers, performanceCountsTolerance);
-%perfCounts_pelvis = crossValidation(0,0, window_size, hiddenLayers, performanceCountsTolerance, pelvisCols);
+perfCounts_all_sensors = crossValidation(0,0, window_size, hiddenLayers, performanceCountsTolerance);
+perfCounts_pelvis = crossValidation(0,0, window_size, hiddenLayers, performanceCountsTolerance, pelvisCols);
 perfCounts_thigh = crossValidation(0,0, window_size, hiddenLayers, performanceCountsTolerance, upLegCols);
 perfCounts_shin = crossValidation(0,0, window_size, hiddenLayers, performanceCountsTolerance, legCols);
 perfCounts_foot = crossValidation(0,0, window_size, hiddenLayers, performanceCountsTolerance, feetCols);
 
-%[all_sensitivity, all_specificity] = getSensitivityAndSpecificityForEachClass(perfCounts_all_sensors);
-%[pelvis_sensitivity, pelvis_specificity] = getSensitivityAndSpecificityForEachClass(perfCounts_pelvis);
+[all_sensitivity, all_specificity] = getSensitivityAndSpecificityForEachClass(perfCounts_all_sensors);
+[pelvis_sensitivity, pelvis_specificity] = getSensitivityAndSpecificityForEachClass(perfCounts_pelvis);
 [thigh_sensitivity, thigh_specificity] = getSensitivityAndSpecificityForEachClass(perfCounts_thigh);
 [shin_sensitivity, shin_specificity] = getSensitivityAndSpecificityForEachClass(perfCounts_shin);
 [foot_sensitivity, foot_specificity] = getSensitivityAndSpecificityForEachClass(perfCounts_foot);
