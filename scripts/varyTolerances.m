@@ -64,7 +64,7 @@ ylabel('Specificity/Sensitivity (%)','FontSize',12);
 
 % Create title
 title('Effect On Sensitivity And Specificity As Classification Tolerance Increases',...
-    'FontSize',12);
+    'FontSize',14);
 
 % Create legend
 legend1 = legend(axes1,'show');

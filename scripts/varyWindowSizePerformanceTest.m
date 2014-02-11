@@ -67,3 +67,4 @@ title('Effect On Specificity And Sensitivity As Neural Network Sliding Window Si
 % Create legend
 legend1 = legend(axes1,'show');
 set(legend1,'FontSize',14);
+end
