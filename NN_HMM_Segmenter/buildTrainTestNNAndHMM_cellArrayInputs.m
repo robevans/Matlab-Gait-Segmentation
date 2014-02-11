@@ -1,11 +1,15 @@
-function [classes, perf_HMM, performanceCountsByClass] = buildTrainTestNNAndHMM_cellArrayInputs(trainNN_data, trainNN_segments, trainHMM_data, trainHMM_segments, test_data, test_segments, hidden_layers, step_size, window_size, trainFcn, plotTitle, showPlot, performanceCountsTolerance)
+function [classes, perf_HMM, performanceCountsByClass] = buildTrainTestNNAndHMM_cellArrayInputs(trainNN_data, trainNN_segments, trainHMM_data, trainHMM_segments, test_data, test_segments, hidden_layers, step_size, window_size, trainFcn, plotTitle, showPlot, performanceCountsTolerance, nClasses)
 % Trains and tests the gait segmenter.  Each of the training data arguments
 % should be a cell array.
-    [net, TRANS, EMIS] = trainNNAndHMM(trainNN_data, trainNN_segments, trainHMM_data, trainHMM_segments, step_size, window_size, hidden_layers, trainFcn);
-    [classes, perf_HMM, performanceCountsByClass] = testNNAndHMM(net, TRANS, EMIS, test_data, test_segments, step_size, window_size, plotTitle, showPlot, performanceCountsTolerance);
+    if nargin < 14
+        nClasses = 5;
+    end
+
+    [net, TRANS, EMIS] = trainNNAndHMM(trainNN_data, trainNN_segments, trainHMM_data, trainHMM_segments, step_size, window_size, hidden_layers, trainFcn, nClasses);
+    [classes, perf_HMM, performanceCountsByClass] = testNNAndHMM(net, TRANS, EMIS, test_data, test_segments, step_size, window_size, plotTitle, showPlot, performanceCountsTolerance, nClasses);
 end
 
-function [net, HMM_TRANS_EST, HMM_EMIS_EST] = trainNNAndHMM(trainNN_data, trainNN_segments, trainHMM_data, trainHMM_segments, step_size, window_size, hiddenLayers, trainFcn)
+function [net, HMM_TRANS_EST, HMM_EMIS_EST] = trainNNAndHMM(trainNN_data, trainNN_segments, trainHMM_data, trainHMM_segments, step_size, window_size, hiddenLayers, trainFcn, nClasses)
 
     %% Train Neural Network
     [Xs,Ts] = formatMultipleDataForNN(trainNN_data, trainNN_segments, step_size, window_size);
@@ -18,8 +22,6 @@ function [net, HMM_TRANS_EST, HMM_EMIS_EST] = trainNNAndHMM(trainNN_data, trainN
     %figure, plottrainstate(tr)
     
     %% Train Hidden Markov Model
-    nClasses = 5;
-    
     % Manually count all but one of the HMM training datas.
     TRANS_COUNTS = zeros(nClasses);
     EMIS_COUNTS = ones(nClasses); % Add one smoothing to allow for any emmission (classification errors).
@@ -35,7 +37,7 @@ function [net, HMM_TRANS_EST, HMM_EMIS_EST] = trainNNAndHMM(trainNN_data, trainN
     [HMM_TRANS_EST, HMM_EMIS_EST] = hmmestimate(vec2ind(emissions), vec2ind(states), 'Pseudotransitions', TRANS_COUNTS, 'Pseudoemissions', EMIS_COUNTS);
 end
 
-function [classes, perf_HMM, performanceCountsByClass] = testNNAndHMM(net, TRANS, EMIS, test_data, test_segments, step_size, window_size, plotTitle, showPlot, performanceCountsTolerance)
+function [classes, perf_HMM, performanceCountsByClass] = testNNAndHMM(net, TRANS, EMIS, test_data, test_segments, step_size, window_size, plotTitle, showPlot, performanceCountsTolerance, nClasses)
     [X,targets] = formatForNetwork(test_data, test_segments, step_size, window_size);
     NN_classifications = net(X);
     %perf_NN = perform(net, targets, ind2vec(vec2ind(NN_classifications)))
@@ -47,7 +49,7 @@ function [classes, perf_HMM, performanceCountsByClass] = testNNAndHMM(net, TRANS
     %perf_HMM = perform(net, targets, HMM_classifications)
     perf_HMM = mse(net, targets, HMM_classifications)
     
-    performanceCountsByClass = performanceMetrics(targets, HMM_classifications, performanceCountsTolerance);
+    performanceCountsByClass = performanceMetrics(targets, HMM_classifications, performanceCountsTolerance, nClasses);
     
     %errors = gsubtract(targets, HMM_classifications);
     %figure, plotconfusion(targets, HMM_classifications)

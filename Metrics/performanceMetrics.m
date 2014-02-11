@@ -1,4 +1,5 @@
-function performanceCountsByClass = performanceMetrics(targets, classifications, tolerance)
+function performanceCountsByClass = performanceMetrics(targets, classifications, tolerance, nClasses)
+% Assumes that class labels go from 1 to nClasses.
 
 if nargin < 3
     tolerance = 0;
@@ -20,11 +21,10 @@ end
 accuracy = correctCount / (correctCount + incorrectCount) * 100
 
 % Class by class performance
-classes = sort(unique(targets));
-performanceCountsByClass = zeros(length(classes), 4);
-for c = 1 : length(classes)
-    X = classifications == classes(c);
-    T = targets == classes(c);
+performanceCountsByClass = zeros(nClasses, 4);
+for c = 1 : nClasses
+    X = classifications == c;
+    T = targets == c;
     [TP, TN, FP, FN] = performanceCountsOneClass( X, T, tolerance );
     performanceCountsByClass(c,:) = [TP, TN, FP, FN];
 end
