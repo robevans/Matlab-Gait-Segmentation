@@ -15,6 +15,16 @@ end
 
 loadAlignedData('caller')
 
+perfCounts_one_sensor = crossValidation(1,0, window_size, hiddenLayers, performanceCountsTolerance, 1);
+[one_sensitivity, one_specificity] = getSensitivityAndSpecificityForEachClass(perfCounts_one_sensor);
+createfigure(one_sensitivity, 'Performance (Sensitivity) of One Sensor', 'Sensitivity (%)')
+createfigure(one_specificity, 'Performance (Sensitivity) of One Sensor', 'Sensitivity (%)')
+set(gcf,'PaperPositionMode','auto');
+set(gcf,'PaperOrientation','landscape');
+set(gcf,'Position',[50 50 1200 800]);
+print( strcat('./Graphs/ONEsensorPlacementSensitivity'), '-dpdf')
+
+%{
 perfCounts_all_sensors = crossValidation(0,0, window_size, hiddenLayers, performanceCountsTolerance);
 perfCounts_pelvis = crossValidation(0,0, window_size, hiddenLayers, performanceCountsTolerance, pelvisCols);
 perfCounts_thigh = crossValidation(0,0, window_size, hiddenLayers, performanceCountsTolerance, upLegCols);
@@ -37,6 +47,7 @@ set(gcf,'PaperPositionMode','auto');
 set(gcf,'PaperOrientation','landscape');
 set(gcf,'Position',[50 50 1200 800]);
 print( strcat('./Graphs/allSensorPlacementsSpecificity'), '-dpdf')
+%}
 end
 
 function [classes_sensitivity, classes_specificity] = getSensitivityAndSpecificityForEachClass(sumOfPerformanceCountsByClass)
