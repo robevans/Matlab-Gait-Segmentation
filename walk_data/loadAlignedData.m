@@ -16,6 +16,9 @@ walks = {'Mxz-10.csv' 'Mxz-18.csv' 'Mxz-19.csv' 'Mxz-23.csv' 'Txz-6.csv' 'Txz-9.
 
 colheaders = {'Pelvis_accel_X', 'Pelvis_accel_Y', 'Pelvis_accel_Z', 'Pelvis_gyro_X', 'Pelvis_gyro_Y', 'Pelvis_gyro_Z', 'RightUpLeg_accel_X', 'RightUpLeg_accel_Y', 'RightUpLeg_accel_Z', 'RightUpLeg_gyro_X', 'RightUpLeg_gyro_Y', 'RightUpLeg_gyro_Z', 'RightLeg_accel_X', 'RightLeg_accel_Y', 'RightLeg_accel_Z', 'RightLeg_gyro_X', 'RightLeg_gyro_Y', 'RightLeg_gyro_Z', 'RightFoot_accel_X', 'RightFoot_accel_Y', 'RightFoot_accel_Z', 'RightFoot_gyro_X', 'RightFoot_gyro_Y', 'RightFoot_gyro_Z', 'LeftUpLeg_accel_X', 'LeftUpLeg_accel_Y', 'LeftUpLeg_accel_Z', 'LeftUpLeg_gyro_X', 'LeftUpLeg_gyro_Y', 'LeftUpLeg_gyro_Z', 'LeftLeg_accel_X', 'LeftLeg_accel_Y', 'LeftLeg_accel_Z', 'LeftLeg_gyro_X', 'LeftLeg_gyro_Y', 'LeftLeg_gyro_Z', 'LeftFoot_accel_X', 'LeftFoot_accel_Y', 'LeftFoot_accel_Z', 'LeftFoot_gyro_X', 'LeftFoot_gyro_Y', 'LeftFoot_gyro_Z'};
 assignin(baseCaller, 'xzCols', colheaders)
+assignin(baseCaller, 'allCols', 1:42);
+assignin(baseCaller, 'allAccelCols', [1:3 7:9 13:15 19:21 25:27 31:33 37:39]);
+assignin(baseCaller, 'allGyroCols', [4:6 10:12 16:18 22:24 28:30 34:36 40:42]);
 assignin(baseCaller, 'pelvisCols', 1:6);
 assignin(baseCaller, 'pelvisAccelCols', 1:3);
 assignin(baseCaller, 'pelvisGyroCols', 4:6);
