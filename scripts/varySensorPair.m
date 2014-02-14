@@ -15,39 +15,47 @@ end
 
 loadAlignedData('caller')
 
-perfCounts_one_sensor = crossValidation(1,0, window_size, hiddenLayers, performanceCountsTolerance, 1);
-[one_sensitivity, one_specificity] = getSensitivityAndSpecificityForEachClass(perfCounts_one_sensor);
-createfigure(one_sensitivity, 'Performance (Sensitivity) of One Sensor', 'Sensitivity (%)')
-createfigure(one_specificity, 'Performance (Sensitivity) of One Sensor', 'Sensitivity (%)')
-set(gcf,'PaperPositionMode','auto');
-set(gcf,'PaperOrientation','landscape');
-set(gcf,'Position',[50 50 1200 800]);
-print( strcat('./Graphs/ONEsensorPlacementSensitivity'), '-dpdf')
+% Generate data
+[allSn,allSp] = crossValidateAndEvaluate(window_size, hiddenLayers, performanceCountsTolerance, allCols);
+[pelSn,pelSp] = crossValidateAndEvaluate(window_size, hiddenLayers, performanceCountsTolerance, pelvisCols);
+[thiSn,thiSp] = crossValidateAndEvaluate(window_size, hiddenLayers, performanceCountsTolerance, upLegCols);
+[shiSn,shiSp] = crossValidateAndEvaluate(window_size, hiddenLayers, performanceCountsTolerance, legCols);
+[fooSn,fooSp] = crossValidateAndEvaluate(window_size, hiddenLayers, performanceCountsTolerance, feetCols);
 
-%{
-perfCounts_all_sensors = crossValidation(0,0, window_size, hiddenLayers, performanceCountsTolerance);
-perfCounts_pelvis = crossValidation(0,0, window_size, hiddenLayers, performanceCountsTolerance, pelvisCols);
-perfCounts_thigh = crossValidation(0,0, window_size, hiddenLayers, performanceCountsTolerance, upLegCols);
-perfCounts_shin = crossValidation(0,0, window_size, hiddenLayers, performanceCountsTolerance, legCols);
-perfCounts_foot = crossValidation(0,0, window_size, hiddenLayers, performanceCountsTolerance, feetCols);
+[allAcSn,allAcSp] = crossValidateAndEvaluate(window_size, hiddenLayers, performanceCountsTolerance, allAccelCols);
+[pelAcSn,pelAcSp] = crossValidateAndEvaluate(window_size, hiddenLayers, performanceCountsTolerance, pelvisAccelCols);
+[thiAcSn,thiAcSp] = crossValidateAndEvaluate(window_size, hiddenLayers, performanceCountsTolerance, upLegAccelCols);
+[shiAcSn,shiAcSp] = crossValidateAndEvaluate(window_size, hiddenLayers, performanceCountsTolerance, legAccelCols);
+[fooAcSn,fooAcSp] = crossValidateAndEvaluate(window_size, hiddenLayers, performanceCountsTolerance, feetAccelCols);
 
-[all_sensitivity, all_specificity] = getSensitivityAndSpecificityForEachClass(perfCounts_all_sensors);
-[pelvis_sensitivity, pelvis_specificity] = getSensitivityAndSpecificityForEachClass(perfCounts_pelvis);
-[thigh_sensitivity, thigh_specificity] = getSensitivityAndSpecificityForEachClass(perfCounts_thigh);
-[shin_sensitivity, shin_specificity] = getSensitivityAndSpecificityForEachClass(perfCounts_shin);
-[foot_sensitivity, foot_specificity] = getSensitivityAndSpecificityForEachClass(perfCounts_foot);
+[allGySn,allGySp] = crossValidateAndEvaluate(window_size, hiddenLayers, performanceCountsTolerance, allGyroCols);
+[pelGySn,pelGySp] = crossValidateAndEvaluate(window_size, hiddenLayers, performanceCountsTolerance, pelvisGyroCols);
+[thiGySn,thiGySp] = crossValidateAndEvaluate(window_size, hiddenLayers, performanceCountsTolerance, upLegGyroCols);
+[shiGySn,shiGySp] = crossValidateAndEvaluate(window_size, hiddenLayers, performanceCountsTolerance, legGyroCols);
+[fooGySn,fooGySp] = crossValidateAndEvaluate(window_size, hiddenLayers, performanceCountsTolerance, feetGyroCols);
 
-createfigure([all_sensitivity, pelvis_sensitivity, thigh_sensitivity, shin_sensitivity, foot_sensitivity], 'Performance (Sensitivity) of Sensor Placements', 'Sensitivity (%)')
-set(gcf,'PaperPositionMode','auto');
-set(gcf,'PaperOrientation','landscape');
-set(gcf,'Position',[50 50 1200 800]);
-print( strcat('./Graphs/allSensorPlacementsSensitivity'), '-dpdf')
-createfigure([all_specificity, pelvis_specificity, thigh_specificity, shin_specificity, foot_specificity], 'Performance (Specificity) of Sensor Placements', 'Specificity (%)')
-set(gcf,'PaperPositionMode','auto');
-set(gcf,'PaperOrientation','landscape');
-set(gcf,'Position',[50 50 1200 800]);
-print( strcat('./Graphs/allSensorPlacementsSpecificity'), '-dpdf')
-%}
+% Create figures
+createAndSaveFigure([allSn,pelSn,thiSn,shiSn,fooSn],'Sensor placement Sensitivity with Accel + Gyro data','Sensitivity (%)',{'All','Pelvis','Thighs','Legs','Feet'})
+createAndSaveFigure([allSp,pelSp,thiSp,shiSp,fooSp],'Sensor placement Specificity with Accel + Gyro data','Specificity (%)',{'All','Pelvis','Thighs','Legs','Feet'})
+
+createAndSaveFigure([allAcSn,pelAcSn,thiAcSn,shiAcSn,fooAcSn],'Sensor placement Sensitivity with Accel data','Sensitivity (%)',{'All','Pelvis','Thighs','Legs','Feet'})
+createAndSaveFigure([allAcSp,pelAcSp,thiAcSp,shiAcSp,fooAcSp],'Sensor placement Specificity with Accel data','Specificity (%)',{'All','Pelvis','Thighs','Legs','Feet'})
+
+createAndSaveFigure([allGySn,pelGySn,thiGySn,shiGySn,fooGySn],'Sensor placement Sensitivity with Gyro data','Sensitivity (%)',{'All','Pelvis','Thighs','Legs','Feet'})
+createAndSaveFigure([allGySp,pelGySp,thiGySp,shiGySp,fooGySp],'Sensor placement Specificity with Gyro data','Specificity (%)',{'All','Pelvis','Thighs','Legs','Feet'})
+
+end
+
+function crossValidateEvaluateAndPlotOneData(window_size, hiddenLayers, performanceCountsTolerance, data_columns, plotTitle)
+perfCounts = crossValidation(0,0, window_size, hiddenLayers, performanceCountsTolerance, data_columns);
+[sensitivity, specificity] = getSensitivityAndSpecificityForEachClass(perfCounts);
+createAndSaveFigure(sensitivity, plotTitle, 'Sensitivity (%)',0)
+createAndSaveFigure(specificity, plotTitle, 'Specificity (%)',0)
+end
+
+function [sensitivity, specificity] = crossValidateAndEvaluate(window_size, hiddenLayers, performanceCountsTolerance, data_columns)
+perfCounts = crossValidation(0,0, window_size, hiddenLayers, performanceCountsTolerance, data_columns);
+[sensitivity, specificity] = getSensitivityAndSpecificityForEachClass(perfCounts);
 end
 
 function [classes_sensitivity, classes_specificity] = getSensitivityAndSpecificityForEachClass(sumOfPerformanceCountsByClass)
@@ -59,11 +67,21 @@ for class = 1 : nClasses
 end
 end
 
-function createfigure(YMatrix1, titleString, yLabelString)
+function createAndSaveFigure(YMatrix1, titleString, yLabelString, legend)
+createfigure(YMatrix1, titleString, yLabelString, legend)
+set(gcf,'PaperPositionMode','auto');
+set(gcf,'PaperOrientation','landscape');
+set(gcf,'Position',[50 50 1200 800]);
+print( strcat('./Graphs/Sensor Pair/',titleString), '-dpdf')
+end
+
+function createfigure(YMatrix1, titleString, yLabelString, legend_labels)
 %CREATEFIGURE1(YMATRIX1)
 %  YMATRIX1:  matrix of y data
 
-%  Auto-generated by MATLAB on 11-Feb-2014 20:10:39
+if nargin < 4
+    legend_labels = {}; % Should be a cell array of strings
+end
 
 % Create figure
 figure1 = figure;
@@ -75,16 +93,17 @@ axes1 = axes('Parent',figure1,...
     'FontSize',12);
 %% Uncomment the following line to preserve the X-limits of the axes
 xlim(axes1,[0.8 5.2]);
+ylim(axes1,[90 100]);
 box(axes1,'on');
 hold(axes1,'all');
 
 % Create multiple lines using matrix input to plot
 plot1 = plot(YMatrix1,'Parent',axes1);
-set(plot1(1),'DisplayName','All');
-set(plot1(2),'DisplayName','Pelvis');
-set(plot1(3),'DisplayName','Thighs');
-set(plot1(4),'DisplayName','Shins');
-set(plot1(5),'DisplayName','Feet');
+if ~isempty(legend_labels)
+    for i = 1 : length(legend_labels)
+        set(plot1(i), 'DisplayName', legend_labels{i});
+    end
+end
 
 % Create xlabel
 xlabel('Gait Phases','FontSize',14);
@@ -96,6 +115,8 @@ ylabel(yLabelString,'FontSize',14);
 title(titleString,'FontSize',14);
 
 % Create legend
-legend1 = legend(axes1,'show');
-set(legend1,'FontSize',14);
+if ~isempty(legend_labels)
+    legend1 = legend(axes1,'show');
+    set(legend1,'FontSize',14);
+end
 end
