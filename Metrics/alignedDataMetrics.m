@@ -1,6 +1,9 @@
 function alignedDataMetrics(window_size, hiddenLayers, performanceCountsTolerance, data_columns)
 fps = 42.666668;
-crossValidation(0,0,window_size, hiddenLayers, performanceCountsTolerance, data_columns);
+
+if nargin > 0
+    crossValidation(0,0,window_size, hiddenLayers, performanceCountsTolerance, data_columns);
+end
 
 load crossValidationClasses
 % Get data indexes for each subject
@@ -80,12 +83,12 @@ R_avg_stance_ratio = (R_stance_ratioL + R_stance_ratioR) / 2;
 S_avg_stance_ratio = (S_stance_ratioL + S_stance_ratioR) / 2;
 J_avg_stance_ratio = (J_stance_ratioL + J_stance_ratioR) / 2;
 
-fprintf('Subject\t\tCycle Time\t\tSteps per min\tStance Ratio\n');
-fprintf('M\t\t\t%.2f\t\t\t%.2f\t\t\t%.2f\n',M_cycle_time,M_steps_per_minute,M_avg_stance_ratio);
-fprintf('T\t\t\t%.2f\t\t\t%.2f\t\t\t%.2f\n',T_cycle_time,T_steps_per_minute,T_avg_stance_ratio);
-fprintf('R\t\t\t%.2f\t\t\t%.2f\t\t\t%.2f\n',R_cycle_time,R_steps_per_minute,R_avg_stance_ratio);
-fprintf('S\t\t\t%.2f\t\t\t%.2f\t\t\t%.2f\n',S_cycle_time,S_steps_per_minute,S_avg_stance_ratio);
-fprintf('J\t\t\t%.2f\t\t\t%.2f\t\t\t%.2f\n',J_cycle_time,J_steps_per_minute,J_avg_stance_ratio);
+fprintf('Subject\t\tCycle Time\t\tSteps per min\tLeft Stance Ratio\tRight Stance Ratio\tAverage Stance Ratio\n');
+fprintf('M\t\t\t%.2f\t\t\t%.2f\t\t\t%.2f\t\t\t\t%.2f\t\t\t\t%.2f\n',M_cycle_time,M_steps_per_minute,M_stance_ratioL,M_stance_ratioR,M_avg_stance_ratio);
+fprintf('T\t\t\t%.2f\t\t\t%.2f\t\t\t%.2f\t\t\t\t%.2f\t\t\t\t%.2f\n',T_cycle_time,T_steps_per_minute,T_stance_ratioL,T_stance_ratioR,T_avg_stance_ratio);
+fprintf('R\t\t\t%.2f\t\t\t%.2f\t\t\t%.2f\t\t\t\t%.2f\t\t\t\t%.2f\n',R_cycle_time,R_steps_per_minute,R_stance_ratioL,R_stance_ratioR,R_avg_stance_ratio);
+fprintf('S\t\t\t%.2f\t\t\t%.2f\t\t\t%.2f\t\t\t\t%.2f\t\t\t\t%.2f\n',S_cycle_time,S_steps_per_minute,S_stance_ratioL,S_stance_ratioR,S_avg_stance_ratio);
+fprintf('J\t\t\t%.2f\t\t\t%.2f\t\t\t%.2f\t\t\t\t%.2f\t\t\t\t%.2f\n',J_cycle_time,J_steps_per_minute,J_stance_ratioL,J_stance_ratioR,J_avg_stance_ratio);
 
 end
 
@@ -118,7 +121,7 @@ ylabel('Right Foot Swing/Stance Durations (seconds)','FontSize',25);
 
 % Plot data
 hold on;
-pointSize = 1000;
+pointSize = 50;
 scatter(M_phaseTimesL(1), M_phaseTimesR(1), pointSize, 'k', 'o', 'fill');
 scatter(M_phaseTimesL(2), M_phaseTimesR(2), pointSize, 'k', 's', 'fill');
 scatter(T_phaseTimesL(1), T_phaseTimesR(1), pointSize, 'g', 'o', 'fill');
@@ -160,7 +163,7 @@ ylabel('Right Foot Gait Phase Durations (seconds)','FontSize',25);
 
 % Plot data
 hold on;
-pointSize = 1000;
+pointSize = 50;
 scatterHelper(M_phaseTimesL, M_phaseTimesR, pointSize, 'k');
 scatterHelper(T_phaseTimesL, T_phaseTimesR, pointSize, 'g');
 scatterHelper(R_phaseTimesL, R_phaseTimesR, pointSize, 'c');
