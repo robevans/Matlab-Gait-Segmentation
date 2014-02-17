@@ -46,7 +46,7 @@ for i = 1 : length(data)
     test_Lsegs = Lsegs{i};
     test_Rsegs = Rsegs{i};
     
-    [~, Lerror, LperfCountsByClass] = buildTrainTestNNAndHMM_cellArrayInputs(train_data, train_Lsegs, train_data, train_Lsegs, test_data, test_Lsegs, hiddenLayers, step_size, window_size, 'trainscg', strcat('Left Leg Segments - capture ',{' '},titles{i}), showPlots, performanceCountsTolerance, 5);
+    [Lclasses{i}, Lerror, LperfCountsByClass] = buildTrainTestNNAndHMM_cellArrayInputs(train_data, train_Lsegs, train_data, train_Lsegs, test_data, test_Lsegs, hiddenLayers, step_size, window_size, 'trainscg', strcat('Left Leg Segments - capture ',{' '},titles{i}), showPlots, performanceCountsTolerance, 5);
     if savePlots
         set(gcf,'PaperPositionMode','auto');
         set(gcf,'PaperOrientation','landscape');
@@ -56,7 +56,7 @@ for i = 1 : length(data)
             close
         end
     end
-    [~, Rerror, RperfCountsByClass] = buildTrainTestNNAndHMM_cellArrayInputs(train_data, train_Rsegs, train_data, train_Rsegs, test_data, test_Rsegs, hiddenLayers, step_size, window_size, 'trainscg', strcat('Right Leg Segments - capture ',{' '},titles{i}), showPlots, performanceCountsTolerance, 5);
+    [Rclasses{i}, Rerror, RperfCountsByClass] = buildTrainTestNNAndHMM_cellArrayInputs(train_data, train_Rsegs, train_data, train_Rsegs, test_data, test_Rsegs, hiddenLayers, step_size, window_size, 'trainscg', strcat('Right Leg Segments - capture ',{' '},titles{i}), showPlots, performanceCountsTolerance, 5);
     if savePlots
         set(gcf,'PaperPositionMode','auto');
         set(gcf,'PaperOrientation','landscape');
@@ -76,5 +76,7 @@ average_error = sum_error / (length(data) * 2)
 sumAllPerformanceCounts = sum(sumPerformanceCountsByClass);
 
 [average_sensitivity, average_specificity] = getSensitivityAndSpecificity(sumAllPerformanceCounts)
+
+save crossValidationClasses titles Lclasses Rclasses
 
 end
