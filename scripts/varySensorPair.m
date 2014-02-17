@@ -118,7 +118,7 @@ title(titleString,'FontSize',14);
 
 % Create legend
 if ~isempty(legend_labels)
-    legend1 = legend(axes1,'show');
+    legend1 = legend(axes1,'show','Location','SouthEast');
     set(legend1,'FontSize',14);
 end
 end
