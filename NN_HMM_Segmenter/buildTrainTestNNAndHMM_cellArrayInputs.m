@@ -58,7 +58,7 @@ function [classes, perf_HMM, performanceCountsByClass] = testNNAndHMM(net, TRANS
     classes = realignNetworkOutput(HMM_classifications, step_size, window_size, length(test_data));
     
     if showPlot
-        plotClassesAndGroundTruth(test_data, classes, test_segments, window_size, performanceCountsByClass, plotTitle);
+        plotClassesAndGroundTruth(test_data, classes, test_segments, window_size, performanceCountsByClass, plotTitle, performanceCountsTolerance);
     end
 end
 

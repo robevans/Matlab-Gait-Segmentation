@@ -1,5 +1,6 @@
-function plotClassesAndGroundTruth(data, classes, trueSegments, window_size, performanceCountsByClass, plotTitle)
-
+function plotClassesAndGroundTruth(data, classes, trueSegments, window_size, performanceCountsByClass, plotTitle, perfTolerance)
+font_size = 20;
+axes_font_size = 11;
 if nargin < 6
     plotTitle = 'Motion data';
 end
@@ -10,7 +11,7 @@ figure1 = figure('Name',...
     'Segmentation with Neural Network and Hidden Markov Model', 'OuterPosition',[1 screen_size(4)/2 screen_size(3)/2 screen_size(4)/2]);
 
 %% Create subplot for sensor data
-subplot1 = subplot(3,1,1,'Parent',figure1,'XMinorTick','on');
+subplot1 = subplot(3,1,1,'Parent',figure1,'XMinorTick','on', 'FontSize', axes_font_size);
 
 box(subplot1,'on');
 grid(subplot1,'on');
@@ -24,15 +25,15 @@ hold(subplot1,'all');
 plot1 = plot(data,'Parent',subplot1);
 
 % Create ylabel
-ylabel('Rotation (deg/s)');
+ylabel('Sensor values', 'FontSize', font_size-3);
 
 % Create title
-title(plotTitle);
+title(plotTitle, 'FontSize', font_size);
 
 %% Create subplot for segment boundaries
 subplot2 = subplot(3,1,2,'Parent',figure1,...
     'YTickLabel',{'','Heel contact','Foot flat','Heel lift','Toe off','Midswing'},...
-    'XMinorTick','on');
+    'XMinorTick','on', 'FontSize', axes_font_size);
 
 box(subplot2,'on');
 grid(subplot2,'on');
@@ -49,7 +50,9 @@ FP = totalCounts(3);
 FN = totalCounts(4);
 sensitivity = TP / (TP + FN) * 100;
 specificity = TN / (FP + TN) * 100;
-title( strcat('Segmentation - sensitivity (', num2str(sensitivity), ') specificity (', num2str(specificity), ')') );
+%title( strcat('Segmentation - Performance with tolerance',{' '},num2str(perfTolerance),': sensitivity (', num2str(sensitivity), ') specificity (', num2str(specificity), ')'), 'FontSize', font_size );
+title( sprintf('Segmentation - Sensitivity: %.1f%% Specificity %.1f%% (Tolerance ±%d frames)', sensitivity, specificity, perfTolerance), 'FontSize', font_size );
+
 
 % Create legend
 %legend(subplot2,'show');
@@ -57,7 +60,7 @@ title( strcat('Segmentation - sensitivity (', num2str(sensitivity), ') specifici
 %% Create subplot for ground truth
 subplot3 = subplot(3,1,3,'Parent',figure1,...
     'YTickLabel',{'','Heel contact','Foot flat','Heel lift','Toe off','Midswing'},...
-    'XMinorTick','on');
+    'XMinorTick','on', 'FontSize', axes_font_size);
 
 % Format data for plotting
 [~, T] = formatForNetwork(data, trueSegments, 1, 1);
@@ -73,10 +76,10 @@ hold(subplot3,'all');
 stem(trueClasses,'Parent',subplot3);
 
 % Create xlabel
-xlabel('Time (frames)');
+xlabel('Time (frames)', 'FontSize', font_size-3);
 
 % Create title
-title('Ground Truth');
+title('Ground Truth', 'FontSize', font_size);
 
 % Create legend
 %legend(subplot3,'show');
