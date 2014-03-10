@@ -9,31 +9,35 @@ function [ X, T ] = formatForNetwork(walk_data, segments, step_size, window_size
 %
 %   walk_data - as imported by loadGyroWalks.m
     
+    nClasses = max(segments(:,2));
+
     input_size = size(walk_data);
     X = zeros(window_size * input_size(2), ceil((length(walk_data)-window_size+1)/step_size));
-    T = zeros(max(segments(:,2)), ceil((length(walk_data)-window_size+1)/step_size));
+    T = zeros(nClasses, ceil((length(walk_data)-window_size+1)/step_size));
 
     i = 0;
+    minSeg = min(segments(:,1)); % Pre-computed
+    maxSeg = max(segments(:,1)); % (for speed)
     while i*step_size + window_size <= length(walk_data)
         window_data = walk_data((i*step_size)+1:(i*step_size)+window_size, :);
         X(:,i+1) = reshape(window_data, numel(window_data), 1);
-        T(:,i+1) = findClassAtCentreOfWindow(i*step_size+1, window_size, segments);
+        T(findClassAtCentreOfWindow(i*step_size+1, window_size, segments, minSeg, maxSeg),i+1) = 1;
         i = i + 1;
     end
 
 end
 
-function window_class = findClassAtCentreOfWindow(window_start_index, window_size, segments)
+function window_class = findClassAtCentreOfWindow(window_start_index, window_size, segments, minSeg, maxSeg)
 % Labels the window according to the class of its central index.
 
     index_of_centre = window_start_index + floor(window_size/2);
     
     % Find the segment prior to the index, and use that class
-    if index_of_centre < min(segments(:,1))
+    if index_of_centre < minSeg
         next_segment = segments(1,:);
         prior_segment_class = mod( next_segment(2)-2, max(segments(:,2)) )+1;
         
-    elseif index_of_centre >= max(segments(:,1))
+    elseif index_of_centre >= maxSeg
         prior_segment_class = segments(end);
         
     else
@@ -47,6 +51,5 @@ function window_class = findClassAtCentreOfWindow(window_start_index, window_siz
     end
     
     % Use vector representation for neural network.
-    window_class = zeros(max(segments(:,2)),1);
-    window_class( prior_segment_class ) = 1;
+    window_class = prior_segment_class;
 end
