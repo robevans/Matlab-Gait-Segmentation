@@ -32,6 +32,8 @@ set(gcf,'PaperOrientation','landscape');
 set(gcf,'Position',[50 50 1200 800]);
 print( strcat('./Graphs/tolerancePerformance'), '-dpdf')
 
+save perf_tolerances tolerancesSensitivitySpecificity
+
 end
 
 function createfigure(Xs1, YMatrix1)
@@ -45,29 +47,29 @@ function createfigure(Xs1, YMatrix1)
 figure1 = figure;
 
 % Create axes
-axes1 = axes('Parent',figure1,'FontSize',12);
-%% Uncomment the following line to preserve the X-limits of the axes
-% xlim(axes1,[0 10]);
+axes1 = axes('Parent',figure1,'FontSize',17);
+%% Uncomment the following line to preserve the limits of the axes
+ylim(axes1,[75 100]);
 box(axes1,'on');
 hold(axes1,'all');
 
 % Create multiple lines using matrix input to plot
-plot1 = plot(Xs1,YMatrix1,'Parent',axes1,'LineWidth',3);
+plot1 = plot(Xs1,YMatrix1,'Parent',axes1,'LineWidth',4);
 set(plot1(1),'DisplayName','Sensitivity');
 set(plot1(2),'DisplayName','Specificity');
 
 % Create xlabel
-xlabel('Tolerance (± n frames)','FontSize',12);
+xlabel('Tolerance (± n frames)','FontSize',18);
 
 % Create ylabel
-ylabel('Specificity/Sensitivity (%)','FontSize',12);
+ylabel('Specificity/Sensitivity (%)','FontSize',18);
 
 % Create title
 title('Effect On Sensitivity And Specificity As Classification Tolerance Increases',...
-    'FontSize',14);
+    'FontSize',20);
 
 % Create legend
-legend1 = legend(axes1,'show');
-set(legend1,'FontSize',14);
+legend1 = legend(axes1,'show','Location','SouthEast');
+set(legend1,'FontSize',20);
 
 end

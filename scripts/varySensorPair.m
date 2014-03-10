@@ -1,3 +1,6 @@
+%TODO: add data columns function parameter and get some juicy results for
+%my report.
+
 function varySensorPair(hiddenLayers, window_size, performanceCountsTolerance)
 % Script to test performance effects of varying sensor placement.
 % Plots sensitivity and specificity for each sensor placement, for each
@@ -44,7 +47,7 @@ createAndSaveFigure([allAcSp,pelAcSp,thiAcSp,shiAcSp,fooAcSp],strcat('Sensor pla
 createAndSaveFigure([allGySn,pelGySn,thiGySn,shiGySn,fooGySn],strcat('Sensor placement Sensitivity with Gyro data, (Tolerance',{' '},num2str(performanceCountsTolerance),')'),'Sensitivity (%)',{'All','Pelvis','Thighs','Legs','Feet'},['SensitivityGyroTolerance' num2str(performanceCountsTolerance)])
 createAndSaveFigure([allGySp,pelGySp,thiGySp,shiGySp,fooGySp],strcat('Sensor placement Specificity with Gyro data, (Tolerance',{' '},num2str(performanceCountsTolerance),')'),'Specificity (%)',{'All','Pelvis','Thighs','Legs','Feet'},['SpecificityGyroTolerance' num2str(performanceCountsTolerance)])
 
-save( ['placementsTolerance' num2str(performanceCountsTolerance)], 'allSn', 'allSp', 'pelSn', 'pelSp', 'thiSn', 'thiSp', 'shiSn', 'shiSp', 'fooSn', 'fooSp', 'allAcSn', 'allAcSp', 'pelAcSn', 'pelAcSp', 'thiAcSn', 'thiAcSp', 'shiAcSn', 'shiAcSp', 'fooAcSn', 'fooAcSp', 'allGySn', 'allGySp', 'pelGySn', 'pelGySp', 'thiGySn', 'thiGySp', 'shiGySn', 'shiGySp', 'fooGySn', 'fooGySp')
+%save( ['placementsTolerance' num2str(performanceCountsTolerance)], 'allSn', 'allSp', 'pelSn', 'pelSp', 'thiSn', 'thiSp', 'shiSn', 'shiSp', 'fooSn', 'fooSp', 'allAcSn', 'allAcSp', 'pelAcSn', 'pelAcSp', 'thiAcSn', 'thiAcSp', 'shiAcSn', 'shiAcSp', 'fooAcSn', 'fooAcSp', 'allGySn', 'allGySp', 'pelGySn', 'pelGySp', 'thiGySn', 'thiGySp', 'shiGySn', 'shiGySp', 'fooGySn', 'fooGySp')
 
 end
 
@@ -90,9 +93,9 @@ figure1 = figure;
 
 % Create axes
 axes1 = axes('Parent',figure1,...
-    'XTickLabel',{'Heel Contact','Foot Flat','Heel Lift','Toe Off','Mid swing'},...
+    'XTickLabel',{'Heel Strike','Foot Flat','Heel Off','Toe Off','Mid swing'},...
     'XTick',[1 2 3 4 5],...
-    'FontSize',12);
+    'FontSize',17);
 %% Uncomment the following line to preserve the X-limits of the axes
 xlim(axes1,[0.8 5.2]);
 ylim(axes1,[0 100]);
@@ -108,17 +111,17 @@ if ~isempty(legend_labels)
 end
 
 % Create xlabel
-xlabel('Gait Phases','FontSize',14);
+xlabel('Gait Phases','FontSize',18);
 
 % Create ylabel
-ylabel(yLabelString,'FontSize',14);
+ylabel(yLabelString,'FontSize',18);
 
 % Create title
-title(titleString,'FontSize',14);
+title(titleString,'FontSize',20);
 
 % Create legend
 if ~isempty(legend_labels)
     legend1 = legend(axes1,'show','Location','SouthEast');
-    set(legend1,'FontSize',14);
+    set(legend1,'FontSize',20);
 end
 end

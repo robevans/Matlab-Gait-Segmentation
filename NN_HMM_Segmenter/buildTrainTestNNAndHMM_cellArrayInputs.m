@@ -1,3 +1,6 @@
+%TODO: Modify the initial state distribution of th HMM to be the uniform
+%distribution.  By default it currently starts in state 1.
+
 function [classes, perf_HMM, performanceCountsByClass] = buildTrainTestNNAndHMM_cellArrayInputs(trainNN_data, trainNN_segments, trainHMM_data, trainHMM_segments, test_data, test_segments, hidden_layers, step_size, window_size, trainFcn, plotTitle, showPlot, performanceCountsTolerance, nClasses)
 % Trains and tests the gait segmenter.  Each of the training data arguments
 % should be a cell array.
@@ -44,7 +47,7 @@ function [classes, perf_HMM, performanceCountsByClass] = testNNAndHMM(net, TRANS
     classes = realignNetworkOutput(NN_classifications, step_size, window_size, length(test_data));
     %plotClasses(test_data, classes);
     
-    HMM_classifications = ind2vec( hmmviterbi(vec2ind(NN_classifications), TRANS, EMIS) );
+    HMM_classifications = ind2vec( hmmviterbi(vec2ind(NN_classifications), TRANS, EMIS), nClasses);
     
     %perf_HMM = perform(net, targets, HMM_classifications)
     perf_HMM = mse(net, targets, HMM_classifications)

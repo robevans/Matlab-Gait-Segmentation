@@ -8,7 +8,7 @@ if nargin < 2
     max_window_size = 27;
 end
 if nargin < 3
-    window_increment_size = 15;
+    window_increment_size = 1;
 end
 if nargin < 4
     hiddenLayers = [10,10,10];
@@ -45,9 +45,11 @@ function createfigure(YMatrix1)
 figure1 = figure;
 
 % Create axes
-axes1 = axes('Parent',figure1,'FontSize',12);
+axes1 = axes('Parent',figure1,'FontSize',17);
 box(axes1,'on');
 hold(axes1,'all');
+
+ylim(axes1,[0 100]);
 
 % Create multiple lines using matrix input to plot
 plot1 = plot(YMatrix1,'Parent',axes1,'LineWidth',4);
@@ -55,16 +57,16 @@ set(plot1(1),'DisplayName','Sensitivity');
 set(plot1(2),'DisplayName','Specificity');
 
 % Create xlabel
-xlabel('Window size (frames)','FontSize',14);
+xlabel('Window size (frames)','FontSize',18);
 
 % Create ylabel
-ylabel('Sensitivity/Specificity (%)','FontSize',14);
+ylabel('Sensitivity/Specificity (%)','FontSize',18);
 
 % Create title
 title('Effect On Specificity And Sensitivity As Neural Network Sliding Window Size Increases',...
-    'FontSize',14);
+    'FontSize',20);
 
 % Create legend
-legend1 = legend(axes1,'show');
-set(legend1,'FontSize',14);
+legend1 = legend(axes1,'show','Location','SouthEast');
+set(legend1,'FontSize',20);
 end

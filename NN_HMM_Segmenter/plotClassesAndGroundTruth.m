@@ -8,7 +8,7 @@ end
 % Create figure
 screen_size = get(0,'ScreenSize');
 figure1 = figure('Name',...
-    'Segmentation with Neural Network and Hidden Markov Model', 'OuterPosition',[1 screen_size(4)/2 screen_size(3)/2 screen_size(4)/2]);
+    'Gait Phase Detection with Neural Network and Hidden Markov Model', 'OuterPosition',[1 screen_size(4)/2 screen_size(3)/2 screen_size(4)/2]);
 
 %% Create subplot for sensor data
 subplot1 = subplot(3,1,1,'Parent',figure1,'XMinorTick','on', 'FontSize', axes_font_size);
@@ -32,7 +32,7 @@ title(plotTitle, 'FontSize', font_size);
 
 %% Create subplot for segment boundaries
 subplot2 = subplot(3,1,2,'Parent',figure1,...
-    'YTickLabel',{'','Heel contact','Foot flat','Heel lift','Toe off','Midswing'},...
+    'YTickLabel',{'','Heel strike','Foot flat','Heel off','Toe off','Midswing'},...
     'XMinorTick','on', 'FontSize', axes_font_size);
 
 box(subplot2,'on');
@@ -51,7 +51,7 @@ FN = totalCounts(4);
 sensitivity = TP / (TP + FN) * 100;
 specificity = TN / (FP + TN) * 100;
 %title( strcat('Segmentation - Performance with tolerance',{' '},num2str(perfTolerance),': sensitivity (', num2str(sensitivity), ') specificity (', num2str(specificity), ')'), 'FontSize', font_size );
-title( sprintf('Segmentation - Sensitivity: %.1f%% Specificity %.1f%% (Tolerance ±%d frames)', sensitivity, specificity, perfTolerance), 'FontSize', font_size );
+title( sprintf('Detected Phases - Sensitivity: %.1f%% Specificity %.1f%% (Tolerance ±%d frames)', sensitivity, specificity, perfTolerance), 'FontSize', font_size );
 
 
 % Create legend
@@ -59,7 +59,7 @@ title( sprintf('Segmentation - Sensitivity: %.1f%% Specificity %.1f%% (Tolerance
 
 %% Create subplot for ground truth
 subplot3 = subplot(3,1,3,'Parent',figure1,...
-    'YTickLabel',{'','Heel contact','Foot flat','Heel lift','Toe off','Midswing'},...
+    'YTickLabel',{'','Heel strike','Foot flat','Heel off','Toe off','Midswing'},...
     'XMinorTick','on', 'FontSize', axes_font_size);
 
 % Format data for plotting

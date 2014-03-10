@@ -121,7 +121,7 @@ ylabel('Right Foot Swing/Stance Durations (seconds)','FontSize',25);
 
 % Plot data
 hold on;
-pointSize = 50;
+pointSize = 80;
 scatter(M_phaseTimesL(1), M_phaseTimesR(1), pointSize, 'k', 'o', 'fill');
 scatter(M_phaseTimesL(2), M_phaseTimesR(2), pointSize, 'k', 's', 'fill');
 scatter(T_phaseTimesL(1), T_phaseTimesR(1), pointSize, 'g', 'o', 'fill');
@@ -163,7 +163,7 @@ ylabel('Right Foot Gait Phase Durations (seconds)','FontSize',25);
 
 % Plot data
 hold on;
-pointSize = 50;
+pointSize = 80;
 scatterHelper(M_phaseTimesL, M_phaseTimesR, pointSize, 'k');
 scatterHelper(T_phaseTimesL, T_phaseTimesR, pointSize, 'g');
 scatterHelper(R_phaseTimesL, R_phaseTimesR, pointSize, 'c');
@@ -174,7 +174,7 @@ plot([0,topCorner],[0,topCorner]);
 hold off;
 
 % Show legend
-L = legend('Heel Strike - Foot Flat','Foot Flat - Heel Lift','Heel Lift - Toe Off','Toe Off - Mid Swing','Mid Swing - Heel Strike','Location','SouthEast');
+L = legend('Heel Strike - Foot Flat','Foot Flat - Heel Off','Heel Off - Toe Off','Toe Off - Mid Swing','Mid Swing - Heel Strike','Location','SouthEast');
 set(L,'FontSize',25);
 end
 
