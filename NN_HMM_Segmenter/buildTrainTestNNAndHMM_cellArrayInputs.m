@@ -1,6 +1,3 @@
-%TODO: Modify the initial state distribution of th HMM to be the uniform
-%distribution.  By default it currently starts in state 1.
-
 function [classes, perf_HMM, performanceCountsByClass] = buildTrainTestNNAndHMM_cellArrayInputs(trainNN_data, trainNN_segments, trainHMM_data, trainHMM_segments, test_data, test_segments, hidden_layers, step_size, window_size, trainFcn, plotTitle, showPlot, performanceCountsTolerance, nClasses)
 % Trains and tests the gait segmenter.  Each of the training data arguments
 % should be a cell array.
