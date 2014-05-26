@@ -1,0 +1,1 @@
+These files were originally captured by Smita Sandrasan on patients with pathological gait.  Unfortunately there doesn't seem to be any matching Vicon data so it's not much use.

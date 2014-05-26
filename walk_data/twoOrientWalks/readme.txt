@@ -1,0 +1,1 @@
+This data was captured from two Orients placed symmetrically on various parts of the body.  Gait phase segmentations resulting from a visual inspection of the data are in alignedOrientSegs.mat

@@ -1,0 +1,1 @@
+This data was originally captured by Aris Valtazones for the latent gait segmentation paper.  Only the gyroscope data is included from the Orients.  No ground truth is available, but segmentations resulting from a visual inspection of the data are in gyro_segs.mat
