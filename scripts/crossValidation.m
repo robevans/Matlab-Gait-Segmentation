@@ -51,7 +51,7 @@ for i = 1 : length(data)
         set(gcf,'PaperPositionMode','auto');
         set(gcf,'PaperOrientation','landscape');
         set(gcf,'Position',[50 50 1200 800]);
-        print( strcat('./Graphs/CrossVal/',titles{i},'L'), '-dpdf')
+        print( strcat('./Graphs/TrialsCrossVal/',titles{i},'L'), '-dpdf')
         if closePlotAfterSaving
             close
         end
@@ -61,7 +61,7 @@ for i = 1 : length(data)
         set(gcf,'PaperPositionMode','auto');
         set(gcf,'PaperOrientation','landscape');
         set(gcf,'Position',[50 50 1200 800]);
-        print( strcat('./Graphs/CrossVal/',titles{i},'R'), '-dpdf')
+        print( strcat('./Graphs/TrialsCrossVal/',titles{i},'R'), '-dpdf')
         if closePlotAfterSaving
             close
         end

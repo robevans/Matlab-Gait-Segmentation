@@ -1,6 +1,6 @@
 function plotClassesAndGroundTruth(data, classes, trueSegments, window_size, performanceCountsByClass, plotTitle, perfTolerance)
-font_size = 20;
-axes_font_size = 11;
+font_size = 22;
+axes_font_size = 22;
 if nargin < 6
     plotTitle = 'Motion data';
 end
@@ -18,8 +18,8 @@ grid(subplot1,'on');
 hold(subplot1,'all');
 
 % Uncomment the following lines to preserve the limits of the axes
-%xlim(subplot1,[32 370]);
-%ylim(subplot1,[-6.89929328621908 16.7932862190813]);
+%xlim(subplot1,[0 100]);
+%ylim(subplot1,[-12.8859060402685 9.39597315436242]);
 
 % Create multiple lines using matrix input to plot
 plot1 = plot(data,'Parent',subplot1);
@@ -32,7 +32,8 @@ title(plotTitle, 'FontSize', font_size);
 
 %% Create subplot for segment boundaries
 subplot2 = subplot(3,1,2,'Parent',figure1,...
-    'YTickLabel',{'','Heel strike','Foot flat','Heel off','Toe off','Midswing'},...
+    'YTickLabel',{'HS','FF','HO','TO','MS'},...
+    'YTick',[1 2 3 4 5],...
     'XMinorTick','on', 'FontSize', axes_font_size);
 
 box(subplot2,'on');
@@ -59,7 +60,8 @@ title( sprintf('Detected Phases - Sensitivity: %.1f%% Specificity %.1f%% (Tolera
 
 %% Create subplot for ground truth
 subplot3 = subplot(3,1,3,'Parent',figure1,...
-    'YTickLabel',{'','Heel strike','Foot flat','Heel off','Toe off','Midswing'},...
+    'YTickLabel',{'HS','FF','HO','TO','MS'},...
+    'YTick',[1 2 3 4 5],...
     'XMinorTick','on', 'FontSize', axes_font_size);
 
 % Format data for plotting

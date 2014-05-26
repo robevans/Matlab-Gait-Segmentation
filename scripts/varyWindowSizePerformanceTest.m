@@ -1,4 +1,4 @@
-function  varyWindowSizePerformanceTest(min_window_size, max_window_size, window_increment_size, hiddenLayers, performanceCountsTolerance)
+function  varyWindowSizePerformanceTest(min_window_size, max_window_size, window_increment_size, hiddenLayers, performanceCountsTolerance, useSaved)
 % Script to test performance of varying window size parameter.
 
 if nargin < 1
@@ -16,13 +16,20 @@ end
 if nargin < 5
     performanceCountsTolerance = 0;
 end
+if nargin < 6
+    useSaved = 1;
+end
 
-sensitivity_specificity_windows = nan(max_window_size,2);
-
-for window_size = min_window_size : window_increment_size : max_window_size
-   performanceCounts = sum(crossValidation(0,0, window_size, hiddenLayers, performanceCountsTolerance));
-   [sensitivity, specificity] = getSensitivityAndSpecificity(performanceCounts);
-   sensitivity_specificity_windows(window_size, :) = [sensitivity, specificity];
+if useSaved
+    load perf_windows
+else 
+    sensitivity_specificity_windows = nan(max_window_size,2);
+    
+    for window_size = min_window_size : window_increment_size : max_window_size
+        performanceCounts = sum(subjects_crossValidation(0,0, window_size, hiddenLayers, performanceCountsTolerance));
+        [sensitivity, specificity] = getSensitivityAndSpecificity(performanceCounts);
+        sensitivity_specificity_windows(window_size, :) = [sensitivity, specificity];
+    end
 end
 
 createfigure(sensitivity_specificity_windows)
@@ -45,11 +52,11 @@ function createfigure(YMatrix1)
 figure1 = figure;
 
 % Create axes
-axes1 = axes('Parent',figure1,'FontSize',17);
+axes1 = axes('Parent',figure1,'FontSize',40);
 box(axes1,'on');
 hold(axes1,'all');
 
-ylim(axes1,[0 100]);
+%ylim(axes1,[0 100]);
 
 % Create multiple lines using matrix input to plot
 plot1 = plot(YMatrix1,'Parent',axes1,'LineWidth',4);
@@ -57,16 +64,15 @@ set(plot1(1),'DisplayName','Sensitivity');
 set(plot1(2),'DisplayName','Specificity');
 
 % Create xlabel
-xlabel('Window size (frames)','FontSize',18);
+xlabel('Window size (frames)','FontSize',40);
 
 % Create ylabel
-ylabel('Sensitivity/Specificity (%)','FontSize',18);
+%ylabel('%','FontSize',30);
 
 % Create title
-title('Effect On Specificity And Sensitivity As Neural Network Sliding Window Size Increases',...
-    'FontSize',20);
+%title('Effect On Specificity And Sensitivity As Neural Network Sliding Window Size Increases','FontSize',20);
 
 % Create legend
 legend1 = legend(axes1,'show','Location','SouthEast');
-set(legend1,'FontSize',20);
+set(legend1,'FontSize',50);
 end

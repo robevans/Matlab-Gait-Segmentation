@@ -2,7 +2,7 @@ function alignedDataMetrics(window_size, hiddenLayers, performanceCountsToleranc
 fps = 42.666668;
 
 if nargin > 0
-    crossValidation(0,0,window_size, hiddenLayers, performanceCountsTolerance, data_columns);
+    subjects_crossValidation(0,0,window_size, hiddenLayers, performanceCountsTolerance, data_columns);
 end
 
 load crossValidationClasses
@@ -114,14 +114,16 @@ J_phaseTimesR = swingStanceSizes(Rclasses(J))/fps;
 
 % Format plot
 F = figure;
-A = axes('Parent',F,'FontSize',20);
-title('Swing/Stance Duration Asymmetries (colour coded by subject)','FontSize',25);
-xlabel('Left Foot Swing/Stance Durations (seconds)','FontSize',25);
-ylabel('Right Foot Swing/Stance Durations (seconds)','FontSize',25);
+A = axes('Parent',F,'FontSize',30);
+xlim(A,[0 0.75]);
+ylim(A,[0 0.75]);
+%title('Swing/Stance Duration Asymmetries (colour coded by subject)','FontSize',25);
+xlabel('Left Swing/Stance Duration (seconds)','FontSize',30);
+ylabel('Right Swing/Stance Duration (seconds)','FontSize',30);
 
 % Plot data
 hold on;
-pointSize = 80;
+pointSize = 130;
 scatter(M_phaseTimesL(1), M_phaseTimesR(1), pointSize, 'k', 'o', 'fill');
 scatter(M_phaseTimesL(2), M_phaseTimesR(2), pointSize, 'k', 's', 'fill');
 scatter(T_phaseTimesL(1), T_phaseTimesR(1), pointSize, 'g', 'o', 'fill');
@@ -133,12 +135,14 @@ scatter(S_phaseTimesL(2), S_phaseTimesR(2), pointSize, 'r', 's', 'fill');
 scatter(J_phaseTimesL(1), J_phaseTimesR(1), pointSize, 'b', 'o', 'fill');
 scatter(J_phaseTimesL(2), J_phaseTimesR(2), pointSize, 'b', 's', 'fill');
 topCorner = max ( get(gca,'xlim'), get(gca,'ylim') );
-plot([0,topCorner],[0,topCorner]);
+plot([0,topCorner],[0,topCorner],'LineWidth',4);
 hold off;
 
 % Show legend
 L = legend('Swing','Stance','Location','SouthEast');
-set(L,'FontSize',25);
+set(L,'FontSize',33);
+M = findobj(L,'type','patch'); % Find objects of type 'patch' (the marker points in the legend)
+set(M,'MarkerSize', sqrt(pointSize)) %Calculate marker size based on size of scatter points
 end
 
 function averagePhaseTimesScatterPlot(M, T, R, S, J, Lclasses, Rclasses, fps)
@@ -156,26 +160,30 @@ J_phaseTimesR = averageSegmentSizes(Rclasses(J))/fps;
 
 % Format plot
 F = figure;
-A = axes('Parent',F,'FontSize',20);
-title('Gait Phase Duration Asymmetries (colour coded by subject)','FontSize',25);
-xlabel('Left Foot Gait Phase Durations (seconds)','FontSize',25);
-ylabel('Right Foot Gait Phase Durations (seconds)','FontSize',25);
+A = axes('Parent',F,'FontSize',30);
+xlim(A,[0 0.75]);
+ylim(A,[0 0.75]);
+%title('Gait Phase Duration Asymmetries (colour coded by subject)','FontSize',25);
+xlabel('Left Gait Phase Duration (seconds)','FontSize',30);
+ylabel('Right Gait Phase Duration (seconds)','FontSize',30);
 
 % Plot data
 hold on;
-pointSize = 80;
+pointSize = 150;
 scatterHelper(M_phaseTimesL, M_phaseTimesR, pointSize, 'k');
 scatterHelper(T_phaseTimesL, T_phaseTimesR, pointSize, 'g');
 scatterHelper(R_phaseTimesL, R_phaseTimesR, pointSize, 'c');
 scatterHelper(S_phaseTimesL, S_phaseTimesR, pointSize, 'r');
 scatterHelper(J_phaseTimesL, J_phaseTimesR, pointSize, 'b');
 topCorner = min ( get(gca,'xlim'), get(gca,'ylim') );
-plot([0,topCorner],[0,topCorner]);
+plot([0,topCorner],[0,topCorner],'LineWidth',4);
 hold off;
 
 % Show legend
 L = legend('Heel Strike - Foot Flat','Foot Flat - Heel Off','Heel Off - Toe Off','Toe Off - Mid Swing','Mid Swing - Heel Strike','Location','SouthEast');
-set(L,'FontSize',25);
+set(L,'FontSize',33);
+M = findobj(L,'type','patch'); % Find objects of type 'patch' (the marker points in the legend)
+set(M,'MarkerSize', sqrt(pointSize)) %Calculate marker size based on size of scatter points
 end
 
 function scatterHelper(Ldata, Rdata, pointSize, colour)

@@ -41,7 +41,7 @@ function [classes, perf_HMM, performanceCountsByClass] = testNNAndHMM(net, TRANS
     [X,targets] = formatForNetwork(test_data, test_segments, step_size, window_size);
     NN_classifications = net(X);
     %perf_NN = perform(net, targets, ind2vec(vec2ind(NN_classifications)))
-    classes = realignNetworkOutput(NN_classifications, step_size, window_size, length(test_data));
+    %classes = realignNetworkOutput(NN_classifications, step_size, window_size, length(test_data));
     %plotClasses(test_data, classes);
     
     HMM_classifications = ind2vec( hmmviterbi(vec2ind(NN_classifications), TRANS, EMIS), nClasses);

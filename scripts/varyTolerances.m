@@ -1,4 +1,4 @@
-function tolerancesSensitivitySpecificity = varyTolerances(maxTolerance, hiddenLayers, window_size)
+function tolerancesSensitivitySpecificity = varyTolerances(maxTolerance, hiddenLayers, window_size, useSaved)
 % Plots the effect on performance (sensitivity and specificity) of varying
 % the tolerance when calculating performance metrics.  e.g. with a
 % tolerance of 1, gait phase classifications will be treated as correct
@@ -13,17 +13,24 @@ end
 if nargin < 3
     window_size = 15;
 end
+if nargin < 4
+    useSaved = 1;
+end
 
-for t = 0 : maxTolerance
-    sumPerfCountsByClass = crossValidation(0,0,window_size,hiddenLayers,t);
-    sumAllPerfCounts = sum(sumPerfCountsByClass);
-    TP = sumAllPerfCounts(1);
-    TN = sumAllPerfCounts(2);
-    FP = sumAllPerfCounts(3);
-    FN = sumAllPerfCounts(4);
-    average_sensitivity = TP / (TP + FN) * 100
-    average_specificity = TN / (FP + TN) * 100
-    tolerancesSensitivitySpecificity(t+1,:) = [average_sensitivity, average_specificity];
+if useSaved
+    load perf_tolerances
+else
+    for t = 0 : maxTolerance
+        sumPerfCountsByClass = subjects_crossValidation(0,0,window_size,hiddenLayers,t);
+        sumAllPerfCounts = sum(sumPerfCountsByClass);
+        TP = sumAllPerfCounts(1);
+        TN = sumAllPerfCounts(2);
+        FP = sumAllPerfCounts(3);
+        FN = sumAllPerfCounts(4);
+        average_sensitivity = TP / (TP + FN) * 100
+        average_specificity = TN / (FP + TN) * 100
+        tolerancesSensitivitySpecificity(t+1,:) = [average_sensitivity, average_specificity];
+    end
 end
 
 createfigure(0:maxTolerance, tolerancesSensitivitySpecificity);
@@ -47,7 +54,7 @@ function createfigure(Xs1, YMatrix1)
 figure1 = figure;
 
 % Create axes
-axes1 = axes('Parent',figure1,'FontSize',17);
+axes1 = axes('Parent',figure1,'FontSize',40);
 %% Uncomment the following line to preserve the limits of the axes
 ylim(axes1,[75 100]);
 box(axes1,'on');
@@ -59,17 +66,16 @@ set(plot1(1),'DisplayName','Sensitivity');
 set(plot1(2),'DisplayName','Specificity');
 
 % Create xlabel
-xlabel('Tolerance (± n frames)','FontSize',18);
+xlabel('Tolerance (± n frames)','FontSize',40);
 
 % Create ylabel
-ylabel('Specificity/Sensitivity (%)','FontSize',18);
+%ylabel('Specificity/Sensitivity (%)','FontSize',18);
 
 % Create title
-title('Effect On Sensitivity And Specificity As Classification Tolerance Increases',...
-    'FontSize',20);
+%title('Effect On Sensitivity And Specificity As Classification Tolerance Increases','FontSize',20);
 
 % Create legend
 legend1 = legend(axes1,'show','Location','SouthEast');
-set(legend1,'FontSize',20);
+set(legend1,'FontSize',50);
 
 end
