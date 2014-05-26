@@ -1,0 +1,1 @@
+This folder contains the Vicon data aligned to the Orient walking data.  It also includes a Processing script to animate the Vicon data.
