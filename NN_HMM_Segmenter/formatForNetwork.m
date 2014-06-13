@@ -4,8 +4,9 @@ function [ X, T ] = formatForNetwork(walk_data, segments, step_size, window_size
 %   window over the input walk.
 %
 %   segments - a 2xN matrix where each row contains a segment index and the
-%   class of that segment.  THIS MUST BE SORTED BY ASCENDING ORDER OF
-%   INDEX.  Segment classes should go from 1 to S.
+%   class of that segment.
+%   MUST BE SORTED BY ASCENDING ORDER OF INDEX.
+%   Segment classes should go from 1 to S.
 %
 %   walk_data - as imported by loadGyroWalks.m
     
