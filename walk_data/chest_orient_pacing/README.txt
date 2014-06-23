@@ -1,0 +1,3 @@
+These captures are from Arvind walking up and down the floor of G.16, first normally, and then with a simulated limp.  He was wearing an Orient on the left chest wall (same way the Respeck is worn), with the green LED of the Orient facing outwards and at the top.
+
+The capture 'respeckPacingSometimes.csv' is from a chest worn RESpeck, during pacing interspersed with sitting or standing periods.  The orientation of the RESpeck was with the smooth side on the chest but otherwise unknown.
