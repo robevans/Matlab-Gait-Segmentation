@@ -52,13 +52,13 @@ function [classes, perf_HMM, performanceCountsByClass] = testNNAndHMM(net, TRANS
     performanceCountsByClass = performanceMetrics(targets, HMM_classifications, performanceCountsTolerance, nClasses);
     
     %errors = gsubtract(targets, HMM_classifications);
-    %figure, plotconfusion(targets, HMM_classifications)
+    figure, plotconfusion(targets, HMM_classifications)
     %figure, ploterrhist(errors)
     
     classes = realignNetworkOutput(HMM_classifications, step_size, window_size, length(test_data));
     
     if showPlot
-        plotClassesAndGroundTruth(test_data, classes, test_segments, window_size, performanceCountsByClass, plotTitle, performanceCountsTolerance);
+        plotClassesAndGroundTruth(test_data, classes, test_segments, window_size, performanceCountsByClass, plotTitle, performanceCountsTolerance, nClasses);
     end
 end
 

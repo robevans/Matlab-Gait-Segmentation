@@ -1,8 +1,8 @@
-function plotClassesAndGroundTruth(data, classes, trueSegments, window_size, performanceCountsByClass, plotTitle, perfTolerance)
+function plotClassesAndGroundTruth(data, classes, trueSegments, window_size, performanceCountsByClass, plotTitle, perfTolerance, nClasses)
 font_size = 22;
 axes_font_size = 22;
-if nargin < 6
-    plotTitle = 'Motion data';
+if nargin < 8
+    nClasses = 5;
 end
 
 % Create figure
@@ -30,10 +30,16 @@ ylabel('Sensor values', 'FontSize', font_size-3);
 % Create title
 title(plotTitle, 'FontSize', font_size);
 
+if nClasses == 8
+    classLabels = {'LR','MSt','TSt','PSt','ISw','MSw','TSw','None'};
+else
+    classLabels = {'HS','FF','HO','TO','MS'};
+end
+
 %% Create subplot for segment boundaries
 subplot2 = subplot(3,1,2,'Parent',figure1,...
-    'YTickLabel',{'HS','FF','HO','TO','MS'},...
-    'YTick',[1 2 3 4 5],...
+    'YTickLabel',classLabels,...
+    'YTick',1:nClasses,...
     'XMinorTick','on', 'FontSize', axes_font_size);
 
 box(subplot2,'on');
@@ -60,8 +66,8 @@ title( sprintf('Detected Phases - Sensitivity: %.1f%% Specificity %.1f%% (Tolera
 
 %% Create subplot for ground truth
 subplot3 = subplot(3,1,3,'Parent',figure1,...
-    'YTickLabel',{'HS','FF','HO','TO','MS'},...
-    'YTick',[1 2 3 4 5],...
+    'YTickLabel',classLabels,...
+    'YTick',1:nClasses,...
     'XMinorTick','on', 'FontSize', axes_font_size);
 
 % Format data for plotting

@@ -3,15 +3,18 @@
 
 %load_chest_orient_pacing()
 
-split = 1089;
+data = respeckPacingSometimes1;
+segs = respeckPacingSometimes1R_segs;
 
-train = pacing4(1:split, :);
-test = pacing4(split+1:end, :);
+split = ceil(length(data)/2);
 
-train_segs = pacing4R_segs(pacing4R_segs(:, 1) <= 1150, :);
+train = data(1:split, :);
+test = data(split+1:end, :);
 
-test_segs = pacing4R_segs;
+train_segs = segs(segs(:, 1) <= split, :);
+
+test_segs = segs;
 test_segs(:, 1) = test_segs(:, 1) - split;
 test_segs = test_segs(test_segs(:,1) > 0, :);
 
-buildTrainTestNNAndHMM_cellArrayInputs({train}, {train_segs}, {train}, {train_segs}, test, test_segs, [40,40,40], 1, 25, 'trainscg','test',1,1,8);
+buildTrainTestNNAndHMM_cellArrayInputs({train}, {train_segs}, {train}, {train_segs}, test, test_segs, [40,40,40], 1, 25, 'trainscg','RESpeck gait',1,0,8);

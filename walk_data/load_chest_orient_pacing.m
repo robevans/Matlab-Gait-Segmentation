@@ -10,8 +10,8 @@ end
 
 orient_walks = {'pacing0.csv' 'pacing1.csv' 'pacing2.csv' 'pacing3.csv'};
 
-for i=1:length(orient_walks),
-    walk = importfile(strcat('chest_orient_pacing/',orient_walks{i}));
+for i = 1:length(orient_walks),
+    walk = importfile(strcat('chest_orient_pacing/', orient_walks{i}));
     
     if simulateRespeck
         walk = walk(mod(1:size(walk,1), 8)==0, 4:6);
@@ -24,12 +24,19 @@ for i=1:length(orient_walks),
     assignin('base', orient_walks{i}(1:end-4), walk)
 end
 
-respeck_walk = importfile2('chest_orient_pacing/respeckPacingSometimes.csv');
-if doPCA
-    [~, respeck_walk] = princomp(zscore(respeck_walk));
-end
-assignin('base', 'pacing4', respeck_walk)
+respeck_walks = {'respeckPacingSometimes0.csv' 'respeckPacingSometimes1.csv' 'respeckPacingSometimes2.csv' 'respeckPacingSometimes3.csv' 'ArvindMorningTrimmed.csv'};
 
+
+for i = 1:length(respeck_walks)
+    respeck_walk = importfile2(strcat('chest_orient_pacing/', respeck_walks{i}));
+    
+    if doPCA
+        [~, respeck_walk] = princomp(zscore(respeck_walk));
+    end
+    
+    assignin('base', respeck_walks{i}(1:end-4), respeck_walk)
+end
+    
 load('chest_orient_pacing.mat')
 
 if simulateRespeck
@@ -43,7 +50,10 @@ assignin('base', 'pacing0R_segs', pacing0R)
 assignin('base', 'pacing1R_segs', pacing1R)
 assignin('base', 'pacing2R_segs', pacing2R)
 assignin('base', 'pacing3R_segs', pacing3R)
-assignin('base', 'pacing4R_segs', respeckPacingSometimesR)
+assignin('base', 'respeckPacingSometimes0R_segs', respeckPacingSometimes0R)
+assignin('base', 'respeckPacingSometimes1R_segs', respeckPacingSometimes1R)
+assignin('base', 'respeckPacingSometimes2R_segs', respeckPacingSometimes2R)
+assignin('base', 'respeckPacingSometimes3R_segs', respeckPacingSometimes3R)
 end
 
 function walk = importfile(filename, startRow, endRow)
